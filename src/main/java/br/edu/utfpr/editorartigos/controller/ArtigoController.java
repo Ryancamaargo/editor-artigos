@@ -40,9 +40,9 @@ public class ArtigoController {
         return artigoService.findById(id);
     }
 
-    @GetMapping("usuario/{usuarioId}")
-    public Set<Artigo> artigosPorUsuario(@PathVariable String usuarioId) {
-        return artigoService.artigosPorUsuario(Long.parseLong(usuarioId));
+    @GetMapping("usuario")
+    public Set<Artigo> artigosPorUsuario() {
+        return artigoService.artigosPorUsuario();
     }
 
     @GetMapping("destaque")
@@ -50,9 +50,9 @@ public class ArtigoController {
         return artigoService.artigosMaisVistos();
     }
 
-    @GetMapping("recomendacao/{usuarioId}")
-    public Set<Artigo> artigosRecomendacao(@PathVariable String usuarioId) {
-        return artigoService.recomendacaoPorUsuario(Long.parseLong(usuarioId));
+    @GetMapping("recomendacao")
+    public Set<Artigo> artigosRecomendacao() {
+        return artigoService.recomendacaoPorUsuario();
     }
 
     public Set<Artigo> artigosFiltro(){

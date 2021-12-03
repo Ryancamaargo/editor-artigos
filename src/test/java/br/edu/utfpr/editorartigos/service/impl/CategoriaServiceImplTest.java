@@ -45,12 +45,4 @@ class CategoriaServiceImplTest {
         categoriaService.cadastrarCategoria(categoria);
         verify(categoriaRepository,times(1)).save(any());
     }
-
-    @Test
-    void cadastrarCategoria() {
-    }
-
-    @Test
-    void deletarCategoria() {
-    }
 }

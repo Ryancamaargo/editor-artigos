@@ -6,7 +6,9 @@ import br.edu.utfpr.editorartigos.repository.PermissaoRepository;
 import br.edu.utfpr.editorartigos.repository.UsuarioRepository;
 import br.edu.utfpr.editorartigos.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,12 +16,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UsuarioServiceImpl extends CrudServiceImpl<Usuario, Long> implements UsuarioService, UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
@@ -42,11 +46,16 @@ public class UsuarioServiceImpl extends CrudServiceImpl<Usuario, Long> implement
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Usuario> usuario = usuarioRepository.findUsuarioByUsername(username);
-        if (usuario.isEmpty()) {
-            throw new UsernameNotFoundException("Usuário não encontrado");
+        Usuario usuario = usuarioRepository.findUsuarioByUsername(username).orElse(null);
+        if (usuario == null) {
+            log.error("User not found in the database");
+            throw new UsernameNotFoundException("User not found in the database");
+        } else {
+            log.info("User found in the database {}", username);
         }
-        return usuario.get();
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        usuario.getPermissoes().forEach(permissao -> authorities.add(new SimpleGrantedAuthority(permissao.getNome())));
+        return new org.springframework.security.core.userdetails.User(usuario.getUsername(), usuario.getPassword(), authorities);
     }
 
     @Override

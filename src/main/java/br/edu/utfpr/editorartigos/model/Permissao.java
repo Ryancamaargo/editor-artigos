@@ -13,20 +13,20 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"id", "nome"})
 public class Permissao implements Serializable,
-								  GrantedAuthority{
-	private static final long serialVersionUID = 1L;
+        GrantedAuthority {
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(length = 20, nullable = false)
-	private String nome;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Override
-	public String getAuthority() {
-		return this.nome;
-	}
-	
-	
+    @Column(length = 20, nullable = false)
+    private String nome;
+
+    @Override
+    public String getAuthority() {
+        return this.nome;
+    }
+
+
 }

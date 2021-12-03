@@ -13,9 +13,9 @@ public interface ArtigoService extends CrudService<Artigo, Long> {
 
     List<Artigo> listarTodos();
 
-    Set<Artigo> artigosPorUsuario(long usuarioId);
+    Set<Artigo> artigosPorUsuario();
 
-    Set<Artigo> recomendacaoPorUsuario(Long usuarioId);
+    Set<Artigo> recomendacaoPorUsuario();
 
     Set<Artigo> artigosMaisVistos();
 }
