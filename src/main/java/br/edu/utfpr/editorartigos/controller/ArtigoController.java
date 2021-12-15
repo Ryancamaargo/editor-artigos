@@ -3,6 +3,7 @@ package br.edu.utfpr.editorartigos.controller;
 import br.edu.utfpr.editorartigos.model.Artigo;
 import br.edu.utfpr.editorartigos.service.ArtigoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class ArtigoController {
         return artigoService.findById(id);
     }
 
-    @GetMapping("usuario")
+    @GetMapping("artigos-usuario")
     public Set<Artigo> artigosPorUsuario() {
         return artigoService.artigosPorUsuario();
     }
@@ -55,7 +56,9 @@ public class ArtigoController {
         return artigoService.recomendacaoPorUsuario();
     }
 
-    public Set<Artigo> artigosFiltro(){
-        return null;
+    @GetMapping("filtro/titulo-chave")
+    public List<Artigo> artigosFiltro(@Param("filtro") String filtro) {
+        return artigoService.findArtigoByTituloOrPalavrasChave(filtro);
+
     }
 }

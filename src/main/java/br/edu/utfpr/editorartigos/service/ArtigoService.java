@@ -18,4 +18,6 @@ public interface ArtigoService extends CrudService<Artigo, Long> {
     Set<Artigo> recomendacaoPorUsuario();
 
     Set<Artigo> artigosMaisVistos();
+
+    List<Artigo> findArtigoByTituloOrPalavrasChave(String query);
 }

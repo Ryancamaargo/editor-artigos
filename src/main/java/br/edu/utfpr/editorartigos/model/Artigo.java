@@ -26,8 +26,8 @@ public class Artigo {
     @Column(nullable = false)
     private String palavrasChave;
 
-    @Lob
-    @Column(nullable = false)
+
+    @Column(nullable = false, length = 50000)
     private String texto;
 
     @ManyToOne

@@ -7,4 +7,9 @@ public class CategoriaJaExisteException extends Exception {
     public CategoriaJaExisteException(String message) {
         this.message = message;
     }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }

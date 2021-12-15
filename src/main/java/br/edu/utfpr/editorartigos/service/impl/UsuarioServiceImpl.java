@@ -40,8 +40,10 @@ public class UsuarioServiceImpl extends CrudServiceImpl<Usuario, Long> implement
 
     @Override
     public void valid(Usuario entity) throws UsuarioJaExisteException {
-        if (usuarioRepository.findUsuarioByUsername(entity.getUsername()).isPresent())
-            throw new UsuarioJaExisteException("Usuario " + entity.getUsername() + " já existe");
+        if(entity.getId() == null)
+            if (usuarioRepository.findUsuarioByUsername(entity.getUsername()).isPresent())
+                throw new UsuarioJaExisteException("Usuario " + entity.getUsername() + " já existe");
+
     }
 
     @Override
@@ -60,8 +62,10 @@ public class UsuarioServiceImpl extends CrudServiceImpl<Usuario, Long> implement
 
     @Override
     public Usuario cadastrarUsuario(Usuario usuario) throws Exception {
-        usuario.setPassword(encoder.encode(usuario.getPassword()));
-        usuario.setPermissoes(Set.of(permissaoRepository.findByNome("ROLE_USER")));
+        if (usuario.getId() == null) {
+            usuario.setPassword(encoder.encode(usuario.getPassword()));
+            usuario.setPermissoes(Set.of(permissaoRepository.findByNome("ROLE_USER")));
+        }
         return save(usuario);
     }
 
@@ -77,6 +81,6 @@ public class UsuarioServiceImpl extends CrudServiceImpl<Usuario, Long> implement
 
     @Override
     public Usuario getUsuarioLogado() {
-        return (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return usuarioRepository.findUsuarioByUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString()).orElse(null);
     }
 }

@@ -23,8 +23,9 @@ public class CategoriaServiceImpl extends CrudServiceImpl<Categoria, Long> imple
 
     @Override
     public void valid(Categoria entity) throws CategoriaJaExisteException {
-        if (categoriaRepository.findByDescricao(entity.getDescricao()).isPresent())
-            throw new CategoriaJaExisteException("Categoria " + entity.getDescricao() + " já existe");
+        if(entity.getId() == null)
+            if (categoriaRepository.findByDescricao(entity.getDescricao()).isPresent())
+                throw new CategoriaJaExisteException("Categoria " + entity.getDescricao() + " já existe");
     }
 
     @Override

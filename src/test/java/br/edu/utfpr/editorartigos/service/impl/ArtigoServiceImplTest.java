@@ -1,26 +1,19 @@
 package br.edu.utfpr.editorartigos.service.impl;
 
-import br.edu.utfpr.editorartigos.exception.CategoriaJaExisteException;
 import br.edu.utfpr.editorartigos.model.Artigo;
 import br.edu.utfpr.editorartigos.model.Categoria;
 import br.edu.utfpr.editorartigos.model.Usuario;
 import br.edu.utfpr.editorartigos.repository.ArtigoRepository;
-import br.edu.utfpr.editorartigos.repository.CategoriaRepository;
-import br.edu.utfpr.editorartigos.repository.UsuarioRepository;
 import br.edu.utfpr.editorartigos.service.ArtigoService;
 import br.edu.utfpr.editorartigos.service.CrudService;
 import br.edu.utfpr.editorartigos.service.UsuarioService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -59,7 +52,10 @@ class ArtigoServiceImplTest {
         when(usuarioService.getUsuarioLogado()).thenReturn(Usuario.builder().id(1L).build());
         when(artigoService.save(artigo)).thenReturn(artigo);
         artigo = artigoService.cadastrarArtigo(artigo);
-        assertEquals(1L, artigo.getAutor().getId());
+        assertEquals(1L, Optional.ofNullable(artigo)
+                .map(Artigo::getAutor)
+                .map(Usuario::getId)
+                .orElse(null));
     }
 
     @Test()
